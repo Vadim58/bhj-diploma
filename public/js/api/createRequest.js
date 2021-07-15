@@ -1,10 +1,10 @@
 const createRequest = (options = {
-  url: 'https://example.com',
+  url: '',
   data: {},
   method: '',
   callback: (err, response) => {
-    console.log('Ошибка, если есть', this.err);
-    console.log('Данные, если нет ошибки', this.response);
+    console.log(this.err);
+    console.log(this.response);
   }
 }) => {
   const xhr = new XMLHttpRequest();
@@ -17,12 +17,12 @@ const createRequest = (options = {
   }
 
   if (this.method === 'GET') {
-    let urlString = `https://example.com?`
+    let urlString = `${this.url}?`
     for (let i = 0; i < keys.length; i++) {
       urlString += `${keys[i]}=${values[i]}&`;
     }
-    const url = urlString.substring(0, urlString.length - 1);
-    xhr.open(this.method, url);
+    const urlComplete = urlString.substring(0, urlString.length - 1);
+    xhr.open(this.method, urlComplete);
     xhr.send();
 
   } else {
@@ -30,7 +30,7 @@ const createRequest = (options = {
     for (let i = 0; i < keys.length; i++) {
       formData.append(keys[i], values[i]);
     }
-    xhr.open(this.method, 'https://example.com');
+    xhr.open(this.method, this.url);
     xhr.send(formData);
   }
 };
