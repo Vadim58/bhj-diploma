@@ -1,49 +1,51 @@
 const createRequest = (options = {
-  url: '',
-  data: {},
-  method: '',
-  callback: (err, response) => {
-    if (xhr.readystate === xhr.DONE && xhr.status === 200) { 
-      const response = xhr.response;                //ЧТО ДЕЛАТЬ С УСПЕШНЫМ RESPONSОМ ТОЖЕ НЕПОНЯТНО, В КОЛЛБЭКЕ КАКОЙ-ТО БАРДАК ТВОРИТСЯ,
-                                                    // ПРОВЕРИТЬ УСПЕШНОСТЬ ОТВЕТА И ЗАПИХНУТЬ КУДА-ТО ЕГО ТЕЛО???
-    } else {
-      console.log(`произошла ошибка${err}`);
-    }
-  }
-}) => {
-  const xhr = new XMLHttpRequest(); //ТЕЛО ФУНКЦИИ С ПРОВЕРКОЙ МЕТОДА
+ }) => {
+  const xhr = new XMLHttpRequest(); 
   xhr.responseType = 'json';
+  xhr.widthCredentials = true;
   let keys = [];
   let values = [];
-  for (item in data) {
+  let urlComplete ='';
+  for (item in options.data) {
     keys.push(item);
-    values.push(data[item]);
+    values.push(options.data[item]);
   }
 
-  if (this.method === 'GET') {
-    let urlString = `${this.url}?`
+  if (options.method === 'GET') {
+    let urlString = `${options.url}?`
     for (let i = 0; i < keys.length; i++) {
       urlString += `${keys[i]}=${values[i]}&`;
     }
-    const urlComplete = urlString.substring(0, urlString.length - 1);
-    xhr.open(this.method, urlComplete);
-    try {
-      xhr.send();           //ЛОВИМ ОШИБКУ, И НЕПОНЯТНО, ЧТО С НЕЙ ДЕЛАТЬ, НА ВСЯКИЙ СЛУЧАЙ КЛАДЕМ В ПЕРЕМЕННУЮ
-    } catch (e) {
-          let err = e.name;
-    }
-
+    urlComplete = urlString.substring(0, urlString.length - 1);
+    xhr.open(options.method, urlComplete);
+    xhr.send();           
+    
   } else {
     formData = new FormData;            
     for (let i = 0; i < keys.length; i++) {
       formData.append(keys[i], values[i]);
     }
-    xhr.open(this.method, this.url);
-    try {
-      xhr.send(formData);
-    } catch (e) {
-                     //АНАЛОГИЧНАЯ СИТУАЦИЯ, ПИСАТЬ НЕ СТАЛ
-    }
+    xhr.open(options.method, options.url);
+    xhr.send(formData);
   }
-
+   xhr.onload = () => {
+    console.log(urlComplete); //для проверки
+    options.callback(null, xhr.response);
+ }
 };
+
+
+//тестовый вызов
+
+createRequest({
+    url: 'http://localhost:8000/',
+    data: { 
+      email: 'vasya@vasya.ru',
+      password: '1234'
+    },
+    method: 'GET', 
+    callback: (err, response) => {
+      console.log( 'Ошибка ' + err );
+      console.log( 'Данные ответа ' + response );
+    }
+  });
