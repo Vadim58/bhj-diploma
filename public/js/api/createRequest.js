@@ -1,6 +1,9 @@
 const createRequest = (options = {
  }) => {
   const xhr = new XMLHttpRequest(); 
+
+  //options.data = {}; -----------?
+   options.callback = () => {};
   xhr.responseType = 'json';
   xhr.widthCredentials = true;
   let keys = [];
@@ -40,7 +43,7 @@ const createRequest = (options = {
 createRequest({
     url: 'http://localhost:8000/',
     data: { 
-      email: 'vasya@vasya.ru',
+      email: 'vasya@mail.ru',
       password: '1234'
     },
     method: 'GET', 
