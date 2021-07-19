@@ -3,7 +3,7 @@
  * Имеет свойство URL, равно пустой строке.
  * */
 class Entity {
-   URL = '';
+  URL = '';
   
 
   /*
@@ -12,8 +12,11 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static list(data, callback){
-   
-  }
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', this.URL);
+  xhr.send();
+  createRequest(data, callback);
+  }  
 
   /**
    * Создаёт счёт или доход/расход с помощью запроса
@@ -29,6 +32,5 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static remove(data, callback ) {
-
   }
 }
