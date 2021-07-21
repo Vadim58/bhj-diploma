@@ -1,6 +1,6 @@
 
 class Entity {
-  constructor{
+  constructor() {
   this.URL = '';
 }
 
