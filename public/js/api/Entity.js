@@ -1,6 +1,9 @@
 
 class Entity {
-  URL = '';
+  constructor{
+  this.URL = '';
+}
+
   
   static list(data, callback){
   const xhr = new XMLHttpRequest();
