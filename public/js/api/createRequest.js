@@ -1,9 +1,7 @@
 const createRequest = (options = {
  }) => {
   const xhr = new XMLHttpRequest(); 
-
-  //options.data = {}; -----------?
-   options.callback = () => {};
+   //options.callback = () => {};
   xhr.responseType = 'json';
   xhr.widthCredentials = true;
   let keys = [];
@@ -32,23 +30,6 @@ const createRequest = (options = {
     xhr.send(formData);
   }
    xhr.onload = () => {
-    console.log(urlComplete); //для проверки
     options.callback(null, xhr.response);
  }
 };
-
-
-//тестовый вызов
-
-createRequest({
-    url: 'http://localhost:8000/',
-    data: { 
-      email: 'vasya@mail.ru',
-      password: '1234'
-    },
-    method: 'GET', 
-    callback: (err, response) => {
-      console.log( 'Ошибка ' + err );
-      console.log( 'Данные ответа ' + response );
-    }
-  });
